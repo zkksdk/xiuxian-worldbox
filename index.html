@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#05060c">
+<title>太虚演天 · 修仙世界模拟器</title>
+<link rel="stylesheet" href="css/style.css">
+<script>
+/* 全局诊断：把运行时错误收集到 window.__errs，便于排查 */
+window.__errs = [];
+window.addEventListener('error', function (e) {
+  window.__errs.push(String(e.message) + ' @' + String(e.filename || '').split('/').pop() + ':' + e.lineno);
+  if (window.__errs.length > 60) window.__errs.shift();
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__errs.push('promise: ' + (e.reason && e.reason.message ? e.reason.message : e.reason));
+});
+</script>
+</head>
+<body>
+<div id="app"></div>
+
+<div id="loading">
+  <div class="lwrap">
+    <div class="taiji"></div>
+    <div class="ltitle">太虚演天</div>
+    <div class="lsub">修仙世界模拟器 · God Simulator</div>
+    <div class="lbarwrap"><div class="lbar" id="loadBar"></div></div>
+    <div class="lstatus" id="loadTxt">叩问天道…</div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
