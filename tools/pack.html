@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="viewport" content="width=412, initial-scale=1.0, user-scalable=yes"><meta charset="utf-8"><title>pack</title>
+<style>body{background:#111;color:#0f0;font:13px monospace;padding:12px;white-space:pre-wrap}</style>
+</head>
+<body>
+<pre id="out">准备中…</pre>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+(function () {
+  var out = document.getElementById('out');
+  function log(s) { out.textContent += '\n' + s; }
+  var FILES = [
+    'index.html', 'README.md', 'css/style.css',
+    'js/config.js', 'js/util.js', 'js/world.js', 'js/units.js', 'js/sects.js',
+    'js/events.js', 'js/decor.js', 'js/brain.js', 'js/render.js', 'js/fx.js', 'js/icons.js', 'js/powers.js',
+    'js/ui.js', 'js/save.js', 'js/main.js',
+    'tools/build.py', 'tools/pack.html'
+  ];
+  if (typeof JSZip === 'undefined') { out.textContent = 'JSZIP_FAILED'; return; }
+  var zip = new JSZip();
+  var ok = 0, fail = [];
+  for (var i = 0; i < FILES.length; i++) {
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '../' + FILES[i], false);
+      xhr.send();
+      if (xhr.status === 200 || xhr.status === 0) {
+        zip.file('xiuxian-worldbox/' + FILES[i], xhr.responseText);
+        ok++;
+      } else fail.push(FILES[i] + ':' + xhr.status);
+    } catch (e) { fail.push(FILES[i] + ':' + e.message); }
+  }
+  out.textContent = 'read ok=' + ok + ' fail=' + fail.join(',');
+  zip.generateAsync({ type: 'base64', compression: 'DEFLATE' }).then(function (b64) {
+    window.__zip = b64;
+    out.textContent += '\nZIP_B64_LEN=' + b64.length + '\nREADY';
+  }).catch(function (e) { out.textContent += '\nZIP_ERR=' + e.message; });
+})();
+</script>
+</body>
+</html>
